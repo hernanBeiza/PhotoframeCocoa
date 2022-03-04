@@ -67,22 +67,25 @@
                         <items>
                             <menuItem title="New Photoframe" keyEquivalent="n" id="82">
                                 <connections>
-                                    <action selector="nuevoPhotoframe:" target="-1" id="HBn-CL-0W0"/>
+                                    <action selector="nuevoPhotoframe:" target="-1" id="HjP-EV-dTl"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Open folder in Photoframe..." keyEquivalent="o" id="VQN-L9-wJ2">
-                                <connections>
-                                    <action selector="openFolder:" target="-1" id="q0b-Bv-7YQ"/>
-                                </connections>
+                            <menuItem title="Open folder in Photoframe…" keyEquivalent="o" id="72"/>
+                            <menuItem title="Open Recent" id="124">
+                                <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="125">
+                                    <items>
+                                        <menuItem title="Clear Menu" id="126">
+                                            <connections>
+                                                <action selector="clearRecentDocuments:" target="-1" id="127"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="79">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Close Photoframe" keyEquivalent="w" id="bkz-Ec-xcU">
-                                <connections>
-                                    <action selector="closePhotoframe:" target="-1" id="19d-BM-01I"/>
-                                </connections>
-                            </menuItem>
+                            <menuItem title="Close Photoframe" keyEquivalent="w" id="73"/>
                         </items>
                     </menu>
                 </menuItem>
@@ -126,15 +129,5 @@
         </menu>
         <customObject id="494" customClass="AppDelegate"/>
         <customObject id="420" customClass="NSFontManager"/>
-        <window title="PhotoframeWindow" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="Jod-2Y-oUN" customClass="PhotoframeWindow">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="207" width="300" height="300"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
-            <view key="contentView" id="2Ft-V2-E0L">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
-                <autoresizingMask key="autoresizingMask"/>
-            </view>
-        </window>
     </objects>
 </document>

@@ -2,8 +2,8 @@
 //  AppDelegate.h
 //  Photoframe
 //
-//  Created by Hernán Beiza on 12/12/13.
-//  Copyright (c) 2013 Hiperactivo. All rights reserved.
+//  Created by Hernán Beiza on 3/7/14.
+//  Copyright (c) 2014 Hiperactivo. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -11,6 +11,7 @@
 #import <QuartzCore/CAAnimation.h>  // for kCATransition<xxx> string constants
 #import <QuartzCore/CoreImage.h>
 #import <QuartzCore/QuartzCore.h>
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;

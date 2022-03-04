@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1425815A185A391300FE587B"
+               BlueprintIdentifier = "141F2D6A18CA4B8400F675DE"
                BuildableName = "Photoframe.app"
                BlueprintName = "Photoframe"
                ReferencedContainer = "container:Photoframe.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1425817E185A391300FE587B"
+               BlueprintIdentifier = "141F2D8E18CA4B8400F675DE"
                BuildableName = "PhotoframeTests.xctest"
                BlueprintName = "PhotoframeTests"
                ReferencedContainer = "container:Photoframe.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1425815A185A391300FE587B"
+            BlueprintIdentifier = "141F2D6A18CA4B8400F675DE"
             BuildableName = "Photoframe.app"
             BlueprintName = "Photoframe"
             ReferencedContainer = "container:Photoframe.xcodeproj">
@@ -61,7 +61,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1425815A185A391300FE587B"
+            BlueprintIdentifier = "141F2D6A18CA4B8400F675DE"
             BuildableName = "Photoframe.app"
             BlueprintName = "Photoframe"
             ReferencedContainer = "container:Photoframe.xcodeproj">
@@ -79,7 +79,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1425815A185A391300FE587B"
+            BlueprintIdentifier = "141F2D6A18CA4B8400F675DE"
             BuildableName = "Photoframe.app"
             BlueprintName = "Photoframe"
             ReferencedContainer = "container:Photoframe.xcodeproj">

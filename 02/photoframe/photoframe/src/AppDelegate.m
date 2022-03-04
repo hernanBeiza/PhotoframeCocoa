@@ -2,12 +2,13 @@
 //  AppDelegate.m
 //  Photoframe
 //
-//  Created by Hernán Beiza on 12/12/13.
-//  Copyright (c) 2013 Hiperactivo. All rights reserved.
+//  Created by Hernán Beiza on 3/7/14.
+//  Copyright (c) 2014 Hiperactivo. All rights reserved.
 //
 
 #import "AppDelegate.h"
 
+#import "PhotoframeWindow.h"
 #import "PhotoframeWindowController.h"
 
 @implementation AppDelegate
@@ -19,37 +20,6 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
-    NSArray *rutasCarpeta = [[NSUserDefaults standardUserDefaults] arrayForKey:PhotoframeCarpeta];
-    NSArray *posiciones = [[NSUserDefaults standardUserDefaults] arrayForKey:PhotoframePosicion];
-    NSArray *data = [[NSUserDefaults standardUserDefaults] arrayForKey:PhotoframeData];
-    
-    NSLog(@"rutasCarpeta %s, %@",__PRETTY_FUNCTION__,rutasCarpeta);
-    NSLog(@"posiciones %s, %@",__PRETTY_FUNCTION__,posiciones);
-    NSLog(@"data %s, %@",__PRETTY_FUNCTION__,data);
-    
-    if(!_ventanas) {
-        _ventanas = [[NSMutableArray alloc] init];
-    }
-    
-    for (int i =0; i<data.count; i++) {
-        NSString *rutaSTR = [[data objectAtIndex:i] valueForKey:@"carpeta"];
-        NSLog(@"rutaSTR %@",rutaSTR);
-        NSString *posSTR = [[data objectAtIndex:i] valueForKey:@"posicion"];
-        NSLog(@"posSTR %@",posSTR);
-        PhotoframeWindowController *photoframeWindowController = [[PhotoframeWindowController alloc] init];
-        [photoframeWindowController setMiRutaCarpeta:rutaSTR];
-        [photoframeWindowController setTag:i];
-        [photoframeWindowController showWindow:self];
-        [_ventanas addObject:photoframeWindowController];
-    }
-    
-    //Debug
-    BOOL borrar = YES;
-    if (borrar) {
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:PhotoframeCarpeta];
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:PhotoframePosicion];
-        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:PhotoframeData];
-    }
 }
 
 // Returns the directory the application uses to store the Core Data store file. This code uses a directory named "cl.hiperactivo.Photoframe" in the user's Application Support directory.
@@ -125,7 +95,7 @@
     return _persistentStoreCoordinator;
 }
 
-// Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.)
+// Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) 
 - (NSManagedObjectContext *)managedObjectContext
 {
     if (_managedObjectContext) {
@@ -143,7 +113,7 @@
     }
     _managedObjectContext = [[NSManagedObjectContext alloc] init];
     [_managedObjectContext setPersistentStoreCoordinator:coordinator];
-    
+
     return _managedObjectContext;
 }
 
@@ -186,13 +156,13 @@
     
     NSError *error = nil;
     if (![[self managedObjectContext] save:&error]) {
-        
-        // Customize this code block to include application-specific recovery steps.
+
+        // Customize this code block to include application-specific recovery steps.              
         BOOL result = [sender presentError:error];
         if (result) {
             return NSTerminateCancel;
         }
-        
+
         NSString *question = NSLocalizedString(@"Could not save changes while quitting. Quit anyway?", @"Quit without saves error question message");
         NSString *info = NSLocalizedString(@"Quitting now will lose any changes you have made since the last successful save", @"Quit without saves error question info");
         NSString *quitButton = NSLocalizedString(@"Quit anyway", @"Quit anyway button title");
@@ -202,17 +172,18 @@
         [alert setInformativeText:info];
         [alert addButtonWithTitle:quitButton];
         [alert addButtonWithTitle:cancelButton];
-        
+
         NSInteger answer = [alert runModal];
         
         if (answer == NSAlertAlternateReturn) {
             return NSTerminateCancel;
         }
     }
-    
+
     return NSTerminateNow;
 }
 
+#pragma mark - Photoframe Métodos
 
 - (IBAction)nuevoPhotoframe:(id)sender
 {
@@ -220,15 +191,18 @@
     if(!_ventanas) {
         _ventanas = [[NSMutableArray alloc] init];
     }
+    
     PhotoframeWindowController *photoframeWindowController = [[PhotoframeWindowController alloc] init];
     [photoframeWindowController setTag:(int)(_ventanas.count)];
-    [_ventanas addObject:photoframeWindowController];
     [photoframeWindowController showWindow:self];
+
+    [_ventanas addObject:photoframeWindowController];
 }
 
 - (IBAction)openFolder:(id)sender
 {
     NSLog(@"openFolder");
+    /*
     if (_ventanas ==nil) {
         NSWindow *activa = [[NSApplication sharedApplication] keyWindow];
         PhotoframeWindowController *windowController = (PhotoframeWindowController*)activa.windowController;
@@ -239,11 +213,13 @@
         PhotoframeWindowController *photoframeWindowController = (PhotoframeWindowController*)activa.windowController;
         [photoframeWindowController abrir:nil];
     }
+    */
 }
 
 - (IBAction)closePhotoframe:(id)sender
 {
     NSLog(@"closePhotoframe");
+    /*
     NSWindow *activa = [[NSApplication sharedApplication] keyWindow];
     PhotoframeWindowController *windowController = (PhotoframeWindowController*)activa.windowController;
     NSLog(@"PhotoframeWindowController activa %@",activa);
@@ -271,6 +247,6 @@
             [windowController setTag:i];
         }
     }
+     */
 }
-
 @end

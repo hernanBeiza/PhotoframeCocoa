@@ -1,56 +1,34 @@
 //
-//  PhotoframeWindowController.m
+//  PhotoframeWindow.m
 //  Photoframe
 //
-//  Created by Hernán Beiza on 3/3/14.
+//  Created by Hernán Beiza on 3/7/14.
 //  Copyright (c) 2014 Hiperactivo. All rights reserved.
 //
 
-#import "PhotoframeWindowController.h"
-
 #import "PhotoframeWindow.h"
 
-@interface PhotoframeWindowController ()
+@interface PhotoframeWindow ()
+
+@property (assign) NSPoint initialLocation;
+@property (nonatomic, copy) NSString *transitionStyle;
+
+@property (nonatomic,strong) NSMutableArray *rutasFotos;
+@property (nonatomic,strong) NSMutableArray *fotos;
+@property (nonatomic,strong) NSTimer *pausaTimer;
+@property (nonatomic) NSUInteger indiceActual;
+@property (nonatomic) NSInteger tiempo;
 
 @end
 
-@implementation PhotoframeWindowController
+@implementation PhotoframeWindow
 
 @synthesize tag;
 @synthesize miRutaCarpeta;
 
-- (id)init
+- (BOOL)canBecomeKeyWindow
 {
-    return [super initWithWindowNibName: @"PhotoframeWindowController"];
-}
-
-- (id)initWithWindow:(NSWindow *)window
-{
-    self = [super initWithWindow:window];
-    if (self) {
-        // Initialization code here.
-    }
-    return self;
-}
-
-- (void)windowDidLoad
-{
-    [super windowDidLoad];
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-    NSLog(@"%s %i",__PRETTY_FUNCTION__,tag);
-    PhotoframeWindow *photoframe = (PhotoframeWindow*)self.window;
-    [photoframe setTag:tag];
-    
-    NSRect e = [[NSScreen mainScreen] frame];
-    int ancho = (int)e.size.width;
-    int alto = (int)e.size.height;
-    
-    int x = [self randomNumberFromNumber:0 toNumber:ancho-self.window.frame.size.width];
-    int y = [self randomNumberFromNumber:0 toNumber:alto-self.window.frame.size.height];
-    
-    [self.window setFrame:NSRectFromCGRect(CGRectMake(x, y, self.window.frame.size.width, self.window.frame.size.height)) display:YES];
-    
-    [self iniciarme];
+    return YES;
 }
 
 - (int)randomNumberFromNumber:(int)fromNumber toNumber:(int)toNumber
@@ -72,7 +50,7 @@
 - (void)mouseDragged:(NSEvent *)theEvent
 {
     NSRect screenVisibleFrame = [[NSScreen mainScreen] visibleFrame];
-    NSRect windowFrame = [self.window frame];
+    NSRect windowFrame = [self frame];
     NSPoint newOrigin = windowFrame.origin;
     
     // Get the mouse location in window coordinates.
@@ -87,11 +65,13 @@
     }
     
     // Move the window to the new location
-    [self.window setFrameOrigin:newOrigin];
+    [self setFrameOrigin:newOrigin];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+
     // Guardar Posiciones Ventanas
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *datas = [[NSMutableArray alloc] initWithArray:[userDefaults arrayForKey:PhotoframeData]];
@@ -102,7 +82,7 @@
             
             NSDictionary *infoOLD = [datas objectAtIndex:tag];
             NSLog(@"infoOLD %@",infoOLD);
-            NSPoint newOrigin =self.window.frame.origin;
+            NSPoint newOrigin =self.frame.origin;
             NSString *posicion = [NSString stringWithFormat:@"%f,%f",newOrigin.x,newOrigin.y];
             NSDictionary *infoNEW = [NSDictionary dictionaryWithObjectsAndKeys:miRutaCarpeta,@"carpeta",posicion,@"posicion", nil];
             NSLog(@"infoNEW %@",infoNEW);
@@ -128,6 +108,17 @@
 - (void)iniciarme
 {
     NSLog(@"%s %i",__PRETTY_FUNCTION__,tag);
+    NSLog(@"%s %@",__PRETTY_FUNCTION__,miRutaCarpeta);
+    
+    NSRect e = [[NSScreen mainScreen] frame];
+    int ancho = (int)e.size.width;
+    int alto = (int)e.size.height;
+    
+    int x = [self randomNumberFromNumber:0 toNumber:ancho-self.frame.size.width];
+    int y = [self randomNumberFromNumber:0 toNumber:alto-self.frame.size.height];
+    
+    [self setFrame:NSRectFromCGRect(CGRectMake(x, y, self.frame.size.width, self.frame.size.height)) display:YES];
+    
     if (miRutaCarpeta) {
         [self leerCarpeta:[NSURL URLWithString:miRutaCarpeta]];
     }else{
@@ -137,11 +128,10 @@
 
 - (IBAction)abrir:(id)sender
 {
-    NSLog(@"%s %i",__PRETTY_FUNCTION__,tag);
-    PhotoframeWindow *photoframe = (PhotoframeWindow*)self.window;
-    [photoframe setTag:tag];
+    NSLog(@"abrir %i",tag);
     
     NSOpenPanel *panel = [NSOpenPanel openPanel];
+    
     // Configure your panel the way you want it
     [panel setCanChooseFiles:NO];
     [panel setCanChooseDirectories:YES];
@@ -158,7 +148,7 @@
             if (rutaCarpeta) {
                 NSLog(@"rutaCarpeta %@",rutaCarpeta);
                 miRutaCarpeta = [rutaCarpeta absoluteString];
-                NSPoint newOrigin = self.window.frame.origin;
+                NSPoint newOrigin = self.frame.origin;
                 NSString *posicion = [NSString stringWithFormat:@"%f,%f",newOrigin.x,newOrigin.y];
                 NSDictionary *infoActual = [NSDictionary dictionaryWithObjectsAndKeys:[rutaCarpeta absoluteString],@"carpeta",posicion,@"posicion", nil];
                 NSLog(@"infoActual %@",infoActual);
@@ -194,9 +184,28 @@
 
 - (void)leerCarpeta:(NSURL*)rutaCarpeta
 {
-    NSLog(@"leerCarpeta %i %@",tag,rutaCarpeta);
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+
     NSError *err;
     NSFileManager *fm = [NSFileManager defaultManager];
+    /*
+     NSDirectoryEnumerator *dirEnumerator = [fm enumeratorAtURL:rutaCarpeta
+     includingPropertiesForKeys:@[ NSURLNameKey, NSURLIsDirectoryKey ]
+     options:NSDirectoryEnumerationSkipsHiddenFiles | NSDirectoryEnumerationSkipsSubdirectoryDescendants
+     errorHandler:nil];
+     NSMutableArray *fileList = [NSMutableArray array];
+     _rutasFotos = [[NSMutableArray alloc] init];
+     for (NSURL *theURL in dirEnumerator) {
+     NSNumber *isDirectory;
+     [theURL getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
+     if (![isDirectory boolValue]) {
+     [fileList addObject:theURL];
+     [_rutasFotos addObject:theURL];
+     }
+     }
+     NSLog(@"%@",fileList);
+     [self dibujar];
+     */
     NSArray *dirContents = [fm contentsOfDirectoryAtURL:rutaCarpeta includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsHiddenFiles error:&err];
     NSArray *extensions = [NSArray arrayWithObjects:@"png",@"jpg",@"jpeg", nil];
     NSArray *filtradas = [dirContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"pathExtension IN %@", extensions]];
@@ -206,12 +215,12 @@
         //NSLog(@"%@",rutaArchivo);
         [_rutasFotos addObject:rutaArchivo];
     }
-    
     [self dibujar];
 }
 
 - (void)dibujar
 {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
     NSMutableArray *popupChoices = [NSMutableArray arrayWithObjects:
                                     // Core Animation's four built-in transition types
                                     kCATransitionFade,
@@ -227,22 +236,34 @@
             [popupChoices addObject:transition];
     }
     
+    
     // pick the default transition
     _transitionStyle = [popupChoices objectAtIndex:0];
     [_slideshowView updateSubviewsWithTransition:_transitionStyle];
     
+    //curSlide1 = YES;
+    
+    
+    /*
+     _fotos = [[NSMutableArray alloc] init];
+     for (NSURL *rutaArchivo in _rutasFotos) {
+     NSImage *fotoImage = [[NSImage alloc] initWithContentsOfURL:rutaArchivo];
+     [_fotos addObject:fotoImage];
+     }
+     */
     //iniciar
     _indiceActual = 0;
+    
     
     NSImage *inicialImage = [[NSImage alloc] initWithContentsOfURL:[_rutasFotos objectAtIndex:_indiceActual]];
     [_slideshowView transitionToImage:inicialImage];
     
     _tiempo = 1;
     if (!_pausaTimer) {
-        _pausaTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(timerComplete) userInfo:nil repeats:YES];
+        _pausaTimer = [NSTimer scheduledTimerWithTimeInterval:_tiempo*60 target:self selector:@selector(timerComplete) userInfo:Nil repeats:YES];
     }
     
-    [self.window makeKeyWindow];
+    [self makeKeyWindow];
     
     //Posicionar
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -253,13 +274,14 @@
     if (posicion) {
         NSArray *punto = [posicion componentsSeparatedByString:@","];
         NSPoint newOrigin = NSMakePoint([[punto objectAtIndex:0] floatValue], [[punto objectAtIndex:1] floatValue]);
-        [self.window setFrameOrigin:newOrigin];
+        [self setFrameOrigin:newOrigin];
     }
 }
 
 #pragma mark - Timer Functions
 - (void)timerComplete
 {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
     //NSLog(@"timerComplete %lu",_indiceActual);
     _indiceActual++;
     //NSLog(@"timerComplete %lu",_indiceActual);
@@ -271,10 +293,11 @@
     //random
     NSUInteger fromNumber = 0;
     NSUInteger toNumber = _rutasFotos.count-1;
-    _indiceActual = (int)(arc4random()%(toNumber-fromNumber))+fromNumber;
+    _indiceActual = (arc4random()%(toNumber-fromNumber))+fromNumber;
     
     NSImage *actualImage = [[NSImage alloc] initWithContentsOfURL:[_rutasFotos objectAtIndex:_indiceActual]];
     //NSImage *actualImage = [_fotos objectAtIndex:_indiceActual];
     [_slideshowView transitionToImage:actualImage];
 }
+
 @end
