@@ -25,7 +25,7 @@
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Preferences…" state="on" keyEquivalent="," id="129"/>
+                            <menuItem title="Preferences…" keyEquivalent="," id="129"/>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -65,21 +65,22 @@
                 <menuItem title="File" id="83">
                     <menu key="submenu" title="File" id="81">
                         <items>
-                            <menuItem title="New Photoframe" keyEquivalent="n" id="72"/>
-                            <menuItem isSeparatorItem="YES" id="fXT-UG-zAf">
-                                <modifierMask key="keyEquivalentModifierMask" command="YES"/>
-                            </menuItem>
-                            <menuItem title="Open folder…" keyEquivalent="o" id="v1c-6Q-0Iu">
+                            <menuItem title="New Photoframe" keyEquivalent="n" id="82">
                                 <connections>
-                                    <action selector="abrir:" target="371" id="w4m-UW-Gwv"/>
+                                    <action selector="nuevoPhotoframe:" target="-1" id="HBn-CL-0W0"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Open folder in Photoframe..." keyEquivalent="o" id="VQN-L9-wJ2">
+                                <connections>
+                                    <action selector="openFolder:" target="-1" id="q0b-Bv-7YQ"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="79">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Close" keyEquivalent="w" id="73">
+                            <menuItem title="Close Photoframe" keyEquivalent="w" id="bkz-Ec-xcU">
                                 <connections>
-                                    <action selector="performClose:" target="-1" id="193"/>
+                                    <action selector="closePhotoframe:" target="-1" id="19d-BM-01I"/>
                                 </connections>
                             </menuItem>
                         </items>
@@ -123,30 +124,17 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="Photoframe" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371" customClass="MainWindow">
-            <windowStyleMask key="styleMask" closable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="300" height="297"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
-            <view key="contentView" wantsLayer="YES" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="297"/>
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W2c-VH-svT" userLabel="slideshowView" customClass="SlideshowView">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="297"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </customView>
-                </subviews>
-            </view>
-            <connections>
-                <outlet property="slideshowView" destination="W2c-VH-svT" id="F8E-Lr-afD"/>
-            </connections>
-        </window>
-        <customObject id="494" customClass="AppDelegate">
-            <connections>
-                <outlet property="window" destination="371" id="532"/>
-            </connections>
-        </customObject>
+        <customObject id="494" customClass="AppDelegate"/>
         <customObject id="420" customClass="NSFontManager"/>
+        <window title="PhotoframeWindow" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="Jod-2Y-oUN" customClass="PhotoframeWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="207" width="300" height="300"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1058"/>
+            <view key="contentView" id="2Ft-V2-E0L">
+                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </view>
+        </window>
     </objects>
 </document>

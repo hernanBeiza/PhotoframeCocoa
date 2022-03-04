@@ -2,7 +2,7 @@
 //  main.m
 //  Photoframe
 //
-//  Created by Hernán Beiza on 11/28/13.
+//  Created by Hernán Beiza on 12/12/13.
 //  Copyright (c) 2013 Hiperactivo. All rights reserved.
 //
 

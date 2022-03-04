@@ -1,32 +1,36 @@
 //
-//  MainWindow.h
+//  PhotoframeWindowController.h
 //  Photoframe
 //
-//  Created by Hernán Beiza on 11/28/13.
-//  Copyright (c) 2013 Hiperactivo. All rights reserved.
+//  Created by Hernán Beiza on 3/3/14.
+//  Copyright (c) 2014 Hiperactivo. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
+
+#import "SlideshowView.h"
 #import <QuartzCore/CAAnimation.h>  // for kCATransition<xxx> string constants
 #import <QuartzCore/CoreImage.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "SlideshowView.h"
-//https://developer.apple.com/library/mac/samplecode/RoundTransparentWindow/Listings/Classes_CustomWindow_h.html#//apple_ref/doc/uid/DTS10000401-Classes_CustomWindow_h-DontLinkElementID_7
-@interface MainWindow : NSWindow
+@interface PhotoframeWindowController : NSWindowController
 
-@property (assign) NSPoint initialLocation;
+@property (nonatomic) int tag;
+@property (nonatomic,strong) NSString *miRutaCarpeta;
 
 @property (nonatomic, retain) IBOutlet SlideshowView *slideshowView;
+
+@property (assign) NSPoint initialLocation;
+@property (nonatomic, copy) NSString *transitionStyle;
 
 @property (nonatomic,strong) NSMutableArray *rutasFotos;
 @property (nonatomic,strong) NSMutableArray *fotos;
 
 @property (nonatomic,strong) NSTimer *pausaTimer;
 @property (nonatomic) NSUInteger indiceActual;
-
-@property (nonatomic, copy) NSString *transitionStyle;
+@property (nonatomic) NSInteger tiempo;
 
 - (IBAction)abrir:(id)sender;
+- (void)leerCarpeta:(NSURL*)rutaCarpeta;
 
 @end

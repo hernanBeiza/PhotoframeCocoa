@@ -177,7 +177,6 @@
 	// so that when we swap ImageView instances in our -transitionToImage: method below (via -replaceSubview:with:).
 	//
 	[self setAnimations:[NSDictionary dictionaryWithObject:newTransition forKey:@"subviews"]];
-    
 }
 
 // -------------------------------------------------------------------------------
